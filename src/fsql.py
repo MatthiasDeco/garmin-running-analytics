@@ -1,6 +1,7 @@
 import sqlite3
 import pandas as pd
 from pathlib import Path
+from typing import Optional
 
 def get_existing_ids(ddbb_sqlite: Path, table: str) -> set:
     if not ddbb_sqlite.exists():
@@ -33,7 +34,7 @@ def upload_df(df: pd.DataFrame, ddbb_sqlite: Path, table: str):
         df_new.to_sql(table, conn, if_exists="append", index=False)
 
 
-def sqlite_to_csv(ddbb_sqlite: Path, table_sqlite: str, output_csv_path: Path,
+def sqlite_to_df(ddbb_sqlite: Path, table_sqlite: str,
                columns: list[str] | None = None,
                filters: dict | None = None,
                order_by: str | None = None,
@@ -61,6 +62,5 @@ def sqlite_to_csv(ddbb_sqlite: Path, table_sqlite: str, output_csv_path: Path,
 
     with sqlite3.connect(ddbb_sqlite) as conn:
         df = pd.read_sql(query, conn)
-        df.to_csv(output_csv_path, index=False)
-        print(f"===== {table_sqlite} exported to CSV =====")
-
+        print(f"===== {table_sqlite} exported to df =====")
+    return df

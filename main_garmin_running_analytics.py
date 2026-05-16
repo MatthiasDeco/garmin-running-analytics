@@ -27,15 +27,15 @@ garmin_transformation.fit_to_sqlite(
     processed_table= str(os.getenv("processed_table_sqlite")),
     summary_table= str(os.getenv("summary_table_sqlite")))
 
-fsql.sqlite_to_csv(
+df_summary = fsql.sqlite_to_df(
     ddbb_sqlite = Path(os.getenv("ddbb_sqlite")),
     table_sqlite = str(os.getenv("summary_table_sqlite")),
-    output_csv_path = Path(os.getenv("output_summary_csv_path")),
     order_by= "activity_date")
+df_summary.to_csv(output_csv_path = Path(os.getenv("output_summary_csv_path")), index=False)
 
-fsql.sqlite_to_csv(
+df_processed = fsql.sqlite_to_df(
     ddbb_sqlite = Path(os.getenv("ddbb_sqlite")),
     table_sqlite = str(os.getenv("processed_table_sqlite")),
-    output_csv_path = Path(os.getenv("output_processed_csv_path")),
     order_by= "file_id",
     limit = 100000)
+df_processed.to_csv(output_csv_path = Path(os.getenv("output_processed_csv_path")), index=False)
