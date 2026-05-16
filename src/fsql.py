@@ -35,10 +35,11 @@ def upload_df(df: pd.DataFrame, ddbb_sqlite: Path, table: str):
 
 
 def sqlite_to_df(ddbb_sqlite: Path, table_sqlite: str,
-               columns: list[str] | None = None,
-               filters: dict | None = None,
-               order_by: str | None = None,
-               limit: int | None = None):
+                columns: list[str] | None = None,
+                filters: dict | None = None,
+                order_by: str | None = None,
+                order_how: str = "ASC",
+                limit: int | None = None):
     
     # Columns
     cols = ", ".join(columns) if columns else "*"
@@ -55,7 +56,7 @@ def sqlite_to_df(ddbb_sqlite: Path, table_sqlite: str,
         query += " WHERE " + " AND ".join(conditions)
     
     if order_by:
-        query += f" ORDER BY {order_by}"
+        query += f" ORDER BY {order_by} {order_how}"
     
     if limit:
         query += f" LIMIT {limit}"

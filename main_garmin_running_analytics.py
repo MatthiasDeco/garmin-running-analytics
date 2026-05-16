@@ -2,7 +2,7 @@
 import sys
 from dotenv import load_dotenv
 from pathlib import Path
-from src import fgarmin, fsql, garmin_transformation
+from src import fgarmin, fsql, garmin_transformation, garmin_analysis
 import os
 
 env = sys.argv[1] if len(sys.argv) > 1 else "dev"
@@ -30,12 +30,12 @@ garmin_transformation.fit_to_sqlite(
 df_summary = fsql.sqlite_to_df(
     ddbb_sqlite = Path(os.getenv("ddbb_sqlite")),
     table_sqlite = str(os.getenv("summary_table_sqlite")),
-    order_by= "activity_date")
+    order_by = "activity_date", order_how = "DESC")
 df_summary.to_csv(Path(os.getenv("output_summary_csv_path")), index=False)
 
 df_processed = fsql.sqlite_to_df(
     ddbb_sqlite = Path(os.getenv("ddbb_sqlite")),
     table_sqlite = str(os.getenv("processed_table_sqlite")),
-    order_by= "file_id",
+    order_by = "file_id", order_how = "DESC",
     limit = 100000)
 df_processed.to_csv(Path(os.getenv("output_processed_csv_path")), index=False)
