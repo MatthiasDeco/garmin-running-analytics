@@ -31,11 +31,11 @@ df_summary = fsql.sqlite_to_df(
     ddbb_sqlite = Path(os.getenv("ddbb_sqlite")),
     table_sqlite = str(os.getenv("summary_table_sqlite")),
     order_by= "activity_date")
-df_summary.to_csv(output_csv_path = Path(os.getenv("output_summary_csv_path")), index=False)
+df_summary.to_csv(Path(os.getenv("output_summary_csv_path")), index=False)
 
 df_processed = fsql.sqlite_to_df(
     ddbb_sqlite = Path(os.getenv("ddbb_sqlite")),
     table_sqlite = str(os.getenv("processed_table_sqlite")),
     order_by= "file_id",
     limit = 100000)
-df_processed.to_csv(output_csv_path = Path(os.getenv("output_processed_csv_path")), index=False)
+df_processed.to_csv(Path(os.getenv("output_processed_csv_path")), index=False)
