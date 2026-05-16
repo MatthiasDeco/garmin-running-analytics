@@ -39,29 +39,34 @@ def sqlite_to_df(ddbb_sqlite: Path, table_sqlite: str,
                 filters: dict | None = None,
                 order_by: str | None = None,
                 order_how: str = "ASC",
-                limit: int | None = None):
+                limit: int | None = None) -> pd.DataFrame:
     
-    # Columns
     cols = ", ".join(columns) if columns else "*"
     query = f"SELECT {cols} FROM {table_sqlite}"
-    
-    # Row filters: {"activity_type": "Road", "total_distance": "> 10"}
+    params = []
+
     if filters:
         conditions = []
         for col, val in filters.items():
-            if isinstance(val, str) and val.strip()[0] in (">", "<", "!", "="):
-                conditions.append(f"{col} {val}")
+            if isinstance(val, list):
+                placeholders = ", ".join("?" * len(val))
+                conditions.append(f"{col} IN ({placeholders})")
+                params.extend(val)
+            elif isinstance(val, str) and val.strip()[0] in (">", "<", "!", "="):
+                op, *rest = val.strip().split(maxsplit=1)
+                conditions.append(f"{col} {op} ?")
+                params.append(rest[0] if rest else val)
             else:
-                conditions.append(f"{col} = '{val}'")
+                conditions.append(f"{col} = ?")
+                params.append(val)
         query += " WHERE " + " AND ".join(conditions)
-    
+
     if order_by:
         query += f" ORDER BY {order_by} {order_how}"
-    
     if limit:
         query += f" LIMIT {limit}"
 
     with sqlite3.connect(ddbb_sqlite) as conn:
-        df = pd.read_sql(query, conn)
+        df = pd.read_sql(query, conn, params=params if params else None)
         print(f"===== {table_sqlite} exported to df =====")
     return df
