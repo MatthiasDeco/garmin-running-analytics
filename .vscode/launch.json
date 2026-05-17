@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },{
+        "name": "[Dev] main_garmin_running_analytics",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/main_garmin_running_analytics.py",
+        "python": "${workspaceFolder}/.venv/Scripts/python.exe",
+        "console": "integratedTerminal",
+        "args": ["dev"]
+        },
+        {
+        "name": "[Prod] main_garmin_running_analytics",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/main_garmin_running_analytics.py",
+        "python": "${workspaceFolder}/.venv/Scripts/python.exe",
+        "console": "integratedTerminal",
+        "args": ["prod"]
+        }
+    ]
+}
