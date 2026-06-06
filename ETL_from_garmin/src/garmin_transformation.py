@@ -7,7 +7,6 @@ from fitparse import FitFile
 
 from ETL_from_garmin.src import fsql
 
-
 def _convert_fit_to_rawdata(filepath: str) -> pd.DataFrame:
     required_columns = ["timestamp", "position_lat", "position_long", "distance",
                         "enhanced_speed", "enhanced_altitude", "heart_rate", "cadence", "fractional_cadence"]
@@ -237,7 +236,7 @@ def _processed_to_stats(df: pd.DataFrame, FTP_bpm: int, FTP_rap: int, weight: in
     valid_bpm   = instant_bpm[(instant_bpm != 0) & (~np.isnan(instant_bpm))]
     average_bpm = np.mean(valid_bpm) if valid_bpm.size > 0 else 0
     max_bpm     = np.max(instant_bpm)
-    average_bpmxrap = average_bpm * moving_average_pace
+    average_beatsxkm = average_bpm * moving_average_pace
 
     deviation_pace = (np.std(instant_pace) / np.mean(instant_pace)) * 100 if np.mean(instant_pace) else 0
     deviation_bpm  = (np.std(instant_bpm)  / np.mean(instant_bpm))  * 100 if np.mean(instant_bpm)  else 0
@@ -246,7 +245,7 @@ def _processed_to_stats(df: pd.DataFrame, FTP_bpm: int, FTP_rap: int, weight: in
     average_stride  = np.mean(instant_stride)
 
     PI_ref = FTP_bpm * FTP_rap
-    PI = (1.0 / (average_bpmxrap / PI_ref)) * 100 if PI_ref and average_bpmxrap else 0
+    PI = (1.0 / (average_beatsxkm / PI_ref)) * 100 if PI_ref and average_beatsxkm else 0
 
     # VDOT
     vdot_final = 0
@@ -300,7 +299,7 @@ def _processed_to_stats(df: pd.DataFrame, FTP_bpm: int, FTP_rap: int, weight: in
         "moving_average_pace": moving_average_pace, "real_average_pace": real_average_pace,
         "average_rap": average_rap, "deviation_pace": deviation_pace,
         "average_bpm": average_bpm, "max_bpm": max_bpm, "deviation_bpm": deviation_bpm,
-        "average_bpmxrap": average_bpmxrap, "average_cadence": average_cadence, "average_stride": average_stride,
+        "average_beatsxkm": average_beatsxkm, "average_cadence": average_cadence, "average_stride": average_stride,
         "total_energy": total_energy, "average_power": average_power, "standardized_power": standardized_power,
         "training_load": training_load, "vdot": vdot_final, "PI": PI, "intensity_factor": intensity_factor,
         "energy_km": energy_km, "TSS_pace": TSS_pace, "TSS_bpm": TSS_bpm,
