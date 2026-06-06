@@ -1,7 +1,7 @@
 import sqlite3
 import pandas as pd
 from pathlib import Path
-from typing import Optional
+
 
 def get_existing_ids(ddbb_sqlite: Path, table: str) -> set:
     if not ddbb_sqlite.exists():
@@ -70,3 +70,4 @@ def sqlite_to_df(ddbb_sqlite: Path, table_sqlite: str,
         df = pd.read_sql(query, conn, params=params if params else None)
         print(f"===== {table_sqlite} exported to df =====")
     return df
+

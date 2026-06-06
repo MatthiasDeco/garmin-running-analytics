@@ -5,7 +5,8 @@ import pytz
 from pathlib import Path
 from fitparse import FitFile
 
-from src import fsql
+from ETL_from_garmin.src import fsql
+
 
 def _convert_fit_to_rawdata(filepath: str) -> pd.DataFrame:
     required_columns = ["timestamp", "position_lat", "position_long", "distance",

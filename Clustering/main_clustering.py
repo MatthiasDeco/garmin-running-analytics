@@ -1,11 +1,21 @@
+
+import sys
 from pathlib import Path
-from src import fsql
+from dotenv import load_dotenv
+from pathlib import Path
+import pandas as pd
+import numpy as np
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
-import pandas as pd
-import numpy as np
+
+
+from ETL_from_garmin.src import fsql
+
+
+env = sys.argv[1] if len(sys.argv) > 1 else "dev"
+load_dotenv(Path(__file__).parent / f".env.{env}")
 
 def main_analysis(ddbb_sqlite: Path, processed_table_sqlite: str, summary_table_sqlite: str):
 
