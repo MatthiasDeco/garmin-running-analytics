@@ -7,23 +7,52 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal"
-        },{
-        "name": "[Dev] main_garmin_running_analytics",
+        },
+        {"name": "[Dev] main_garmin_running_analytics",
         "type": "debugpy",
         "request": "launch",
-        "program": "${workspaceFolder}/main_garmin_running_analytics.py",
+        "program": "${workspaceFolder}/ETL_from_garmin/main_ETL_from_garmin.py",
         "python": "${workspaceFolder}/.venv/Scripts/python.exe",
         "console": "integratedTerminal",
-        "args": ["dev"]
+        "args": ["dev"],
+        "env": {
+            "PYTHONPATH": "${workspaceFolder}"
+            }
         },
         {
         "name": "[Prod] main_garmin_running_analytics",
         "type": "debugpy",
         "request": "launch",
-        "program": "${workspaceFolder}/main_garmin_running_analytics.py",
+        "program": "${workspaceFolder}/ETL_from_garmin/main_ETL_from_garmin.py",
         "python": "${workspaceFolder}/.venv/Scripts/python.exe",
         "console": "integratedTerminal",
-        "args": ["prod"]
+        "args": ["prod"],
+        "env": {
+            "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
+        {
+        "name": "[Dev] main_clustering",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/Clustering/main_clustering.py",
+        "python": "${workspaceFolder}/.venv/Scripts/python.exe",
+        "console": "integratedTerminal",
+        "args": ["dev"],
+        "env": {
+            "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
+        {"name": "[Prod] main_clustering",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/Clustering/main_clustering.py",
+        "python": "${workspaceFolder}/.venv/Scripts/python.exe",
+        "console": "integratedTerminal",
+        "args": ["prod"],
+        "env": {
+            "PYTHONPATH": "${workspaceFolder}"
+            }
         }
     ]
 }

@@ -9,7 +9,7 @@ from ETL_from_garmin.src import garmin_transformation
 from ETL_from_garmin.src import fsql
 
 env = sys.argv[1] if len(sys.argv) > 1 else "dev"
-load_dotenv(Path(__file__).parent / f".env.{env}")
+load_dotenv(f".env.{env}")
 
 try:
     fgarmin.fit_activitys_download(
