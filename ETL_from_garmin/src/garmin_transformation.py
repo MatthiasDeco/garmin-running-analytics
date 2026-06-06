@@ -203,25 +203,25 @@ def _raw_to_processed(df_raw: pd.DataFrame, file_id: str) -> pd.DataFrame:
 
 # Summary
 def _processed_to_stats(df: pd.DataFrame, FTP_bpm: int, FTP_rap: int, weight: int) -> pd.DataFrame:
-    accumulated_time             = df["accumulated_time"]
-    accumulated_distance         = df["accumulated_distance"]
-    accumulated_positive_level   = df["accumulated_positive_level"]
-    accumulated_negative_level   = df["accumulated_negative_level"]
-    instant_pace                 = df["instant_pace"]
-    instant_bpm                  = df["instant_bpm"]
-    instant_cadence              = df["instant_cadence"]
-    instant_stride               = df["instant_stride"]
-    instant_consum_per_kg        = df["instant_consum_per_kg"]
+    accumulated_time = df["accumulated_time"]
+    accumulated_distance = df["accumulated_distance"]
+    accumulated_positive_level = df["accumulated_positive_level"]
+    accumulated_negative_level = df["accumulated_negative_level"]
+    instant_pace = df["instant_pace"]
+    instant_bpm = df["instant_bpm"]
+    instant_cadence = df["instant_cadence"]
+    instant_stride = df["instant_stride"]
+    instant_consum_per_kg = df["instant_consum_per_kg"]
 
-    file_id       = df["file_id"].iloc[0]
+    file_id = df["file_id"].iloc[0]
     activity_date = df["activity_date"].iloc[0]
-    inicial_time  = df["inicial_time"].iloc[0]
-    finish_time   = df["finish_time"].iloc[0]
+    inicial_time = df["inicial_time"].iloc[0]
+    finish_time = df["finish_time"].iloc[0]
     activity_type = df["activity_type"].iloc[0]
-    inicial_lat   = df["position_lat"].iloc[0]
-    inicial_long  = df["position_long"].iloc[0]
+    inicial_lat = df["position_lat"].iloc[0]
+    inicial_long = df["position_long"].iloc[0]
 
-    total_time     = np.max(accumulated_time)
+    total_time = np.max(accumulated_time)
     total_distance = np.max(accumulated_distance) / 1000
     total_pos_level = np.max(accumulated_positive_level)
     total_neg_level = np.min(accumulated_negative_level)
@@ -229,20 +229,20 @@ def _processed_to_stats(df: pd.DataFrame, FTP_bpm: int, FTP_rap: int, weight: in
 
     valid_pace = instant_pace[instant_pace != 0]
     moving_average_pace = np.mean(valid_pace) if valid_pace.size > 0 else 0
-    real_average_pace   = total_time / total_distance if total_distance else 0
+    real_average_pace = total_time / total_distance if total_distance else 0
     dist_eq_rap = total_distance + 5 * total_pos_level / 1000 - 2.5 * total_neg_level / 1000
     average_rap = total_time / dist_eq_rap if dist_eq_rap else 0
 
-    valid_bpm   = instant_bpm[(instant_bpm != 0) & (~np.isnan(instant_bpm))]
+    valid_bpm = instant_bpm[(instant_bpm != 0) & (~np.isnan(instant_bpm))]
     average_bpm = np.mean(valid_bpm) if valid_bpm.size > 0 else 0
-    max_bpm     = np.max(instant_bpm)
+    max_bpm = np.max(instant_bpm)
     average_beatsxkm = average_bpm * moving_average_pace
 
     deviation_pace = (np.std(instant_pace) / np.mean(instant_pace)) * 100 if np.mean(instant_pace) else 0
     deviation_bpm  = (np.std(instant_bpm)  / np.mean(instant_bpm))  * 100 if np.mean(instant_bpm)  else 0
 
     average_cadence = np.mean(instant_cadence)
-    average_stride  = np.mean(instant_stride)
+    average_stride = np.mean(instant_stride)
 
     PI_ref = FTP_bpm * FTP_rap
     PI = (1.0 / (average_beatsxkm / PI_ref)) * 100 if PI_ref and average_beatsxkm else 0
@@ -252,21 +252,21 @@ def _processed_to_stats(df: pd.DataFrame, FTP_bpm: int, FTP_rap: int, weight: in
     if activity_type in ["Road", "Trail"]:
         vdot_table = pd.DataFrame({
             "VDOT": [30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62],
-            "1500":   [8.5,8.033,7.617,7.233,6.9,6.583,6.317,6.05,5.817,5.5,5.4,5.217,5.033,4.883,4.733,4.583,4.45],
-            "3000":   [17.933,16.983,16.15,15.383,14.683,14.05,13.467,12.917,12.433,11.75,11.55,11.15,10.783,10.45,10.133,9.833,9.55],
-            "5000":   [30.667,29.083,27.65,26.367,25.2,24.133,23.15,22.25,21.417,20.3,19.95,19.283,18.667,18.083,17.55,17.05,16.567],
-            "10000":  [63.767,60.433,57.433,54.733,52.283,50.05,48.017,46.15,44.417,42.067,41.35,39.983,38.7,37.517,36.4,35.367,34.383],
-            "15000":  [98.233,93.117,88.5,84.333,80.55,77.1,73.933,71.033,68.367,64.733,63.6,61.483,59.5,57.65,55.917,54.3,52.783],
-            "21100":  [141.067,133.817,127.267,121.317,115.917,110.983,106.45,102.283,98.45,93.2,91.583,88.517,85.667,83,80.5,78.15,75.57],
-            "42200":  [289.283,274.983,262.05,250.317,239.583,229.75,220.717,212.383,204.65,194.1,190.817,184.6,178.783,173.333,168.233,163.417,158.9],
-            "50000":  [359.89,342.1,326.01,311.41,298.06,285.83,274.59,264.22,254.6,241.48,237.39,229.66,222.42,215.64,209.29,203.30,197.68],
+            "1500": [8.5,8.033,7.617,7.233,6.9,6.583,6.317,6.05,5.817,5.5,5.4,5.217,5.033,4.883,4.733,4.583,4.45],
+            "3000": [17.933,16.983,16.15,15.383,14.683,14.05,13.467,12.917,12.433,11.75,11.55,11.15,10.783,10.45,10.133,9.833,9.55],
+            "5000": [30.667,29.083,27.65,26.367,25.2,24.133,23.15,22.25,21.417,20.3,19.95,19.283,18.667,18.083,17.55,17.05,16.567],
+            "10000": [63.767,60.433,57.433,54.733,52.283,50.05,48.017,46.15,44.417,42.067,41.35,39.983,38.7,37.517,36.4,35.367,34.383],
+            "15000": [98.233,93.117,88.5,84.333,80.55,77.1,73.933,71.033,68.367,64.733,63.6,61.483,59.5,57.65,55.917,54.3,52.783],
+            "21100": [141.067,133.817,127.267,121.317,115.917,110.983,106.45,102.283,98.45,93.2,91.583,88.517,85.667,83,80.5,78.15,75.57],
+            "42200": [289.283,274.983,262.05,250.317,239.583,229.75,220.717,212.383,204.65,194.1,190.817,184.6,178.783,173.333,168.233,163.417,158.9],
+            "50000": [359.89,342.1,326.01,311.41,298.06,285.83,274.59,264.22,254.6,241.48,237.39,229.66,222.42,215.64,209.29,203.30,197.68],
             "150000": [1079.67,1026.3,978.03,934.24,894.18,857.48,823.77,792.66,763.8,724.43,712.17,688.97,667.26,646.92,627.89,609.91,593.05],
         })
         dist_cols = [c for c in vdot_table.columns if c != "VDOT"]
         distances = np.array([float(c) for c in dist_cols])
-        sort_idx  = np.argsort(distances)
+        sort_idx = np.argsort(distances)
         distances = distances[sort_idx]
-        d_interp  = total_distance * 1000 if activity_type == "Road" else equivalence_distance * 1000
+        d_interp = total_distance * 1000 if activity_type == "Road" else equivalence_distance * 1000
         predicted_times = np.array([
             np.interp(d_interp, distances, row[dist_cols].values.astype(float)[sort_idx])
             for _, row in vdot_table.iterrows()
@@ -277,18 +277,18 @@ def _processed_to_stats(df: pd.DataFrame, FTP_bpm: int, FTP_rap: int, weight: in
 
     # Energy & power
     running_efficiency = 0.25
-    average_power      = np.mean(instant_consum_per_kg) * weight * running_efficiency
+    average_power = np.mean(instant_consum_per_kg) * weight * running_efficiency
     standardized_power = average_power * 170 / average_bpm if average_bpm else 0
-    total_energy       = np.sum(instant_consum_per_kg) * weight * running_efficiency
-    energy_km          = total_energy / total_distance if total_distance else 0
+    total_energy = np.sum(instant_consum_per_kg) * weight * running_efficiency / 1000
+    energy_km = total_energy / total_distance if total_distance else 0
 
     # Training load
     if_pace = average_rap / FTP_rap if FTP_rap else 0
-    if_bpm  = average_bpm / FTP_bpm if FTP_bpm else 0
-    TSS_pace      = (total_time / 60) * (if_pace ** 2) * 100
-    TSS_bpm       = (total_time / 60) * (if_bpm  ** 2) * 100
+    if_bpm = average_bpm / FTP_bpm if FTP_bpm else 0
+    TSS_pace = (total_time / 60) * (if_pace ** 2) * 100
+    TSS_bpm = (total_time / 60) * (if_bpm  ** 2) * 100
     intensity_factor = (if_pace + if_bpm) / 2
-    training_load    = (TSS_pace + TSS_bpm) / 2 if activity_type in ["Road", "Trail"] else 0
+    training_load = (TSS_pace + TSS_bpm) / 2 if activity_type in ["Road", "Trail"] else 0
 
     return pd.DataFrame([{
         "file_id": file_id, "activity_type": activity_type,
