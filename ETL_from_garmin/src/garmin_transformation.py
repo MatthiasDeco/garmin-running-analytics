@@ -152,8 +152,8 @@ def _raw_to_processed(df_raw: pd.DataFrame, file_id: str) -> pd.DataFrame:
     instant_pace[instant_pace > pace_limit] = 0
 
     instant_bpm      = heart_rate.copy()
-    instant_bpmxpace = instant_bpm * instant_pace
-    instant_bpmxpace[(instant_bpmxpace > 1500) | (instant_bpmxpace < 400)] = 0
+    instant_beatsxkm = instant_bpm * instant_pace
+    instant_beatsxkm[(instant_beatsxkm > 1500) | (instant_beatsxkm < 400)] = 0
 
     instant_cadence       = cadence * 2
     instant_split_cadence = fractional_cadence * 2
@@ -194,7 +194,7 @@ def _raw_to_processed(df_raw: pd.DataFrame, file_id: str) -> pd.DataFrame:
         "accumulated_positive_level": accumulated_positive_level,
         "accumulated_negative_level": accumulated_negative_level,
         "instant_pace": instant_pace, "instant_bpm": instant_bpm,
-        "instant_bpmxpace": instant_bpmxpace,
+        "instant_beatsxkm": instant_beatsxkm,
         "instant_cadence": instant_cadence, "instant_split_cadence": instant_split_cadence,
         "instant_stride": instant_stride,
         "instant_MET": instant_MET, "instant_consum_per_kg": instant_consum_per_kg,
